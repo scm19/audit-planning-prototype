@@ -1,0 +1,11 @@
+data/
+app_data/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+dev/browser-check/node_modules/
+dev/browser-check/out/
+eval/results/*.jsonl.gz
+.DS_Store
+.env

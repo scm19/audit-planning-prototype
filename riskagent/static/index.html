@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Single Audit Risk Brief</title>
+  <meta name="description" content="Plan a federal Single Audit: ranked program × compliance-requirement areas to investigate, traced to public audit history.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%230f0e0d'/%3E%3Ctext x='16' y='21' font-family='Helvetica,Arial,sans-serif' font-weight='700' font-size='13' text-anchor='middle' fill='%23ffffff'%3ESA%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#chat-input">Skip to chat</a>
+  <div class="app">
+    <nav class="rail2" aria-label="Main">
+      <button id="sb-home" type="button" class="rail2-mark" title="All engagements" aria-label="All engagements">SA</button>
+      <button id="sb-new-eng" type="button" class="rail2-btn" title="New engagement" aria-label="New engagement"></button>
+      <button id="sb-list" type="button" class="rail2-btn" title="Engagements" aria-label="Engagements"></button>
+      <span class="rail2-spacer"></span>
+      <button id="sb-about" type="button" class="rail2-btn" title="About" aria-label="About this tool" aria-expanded="false"></button>
+    </nav>
+
+    <main class="main" id="main">
+      <section id="index-view" class="index-view" aria-label="Engagements" hidden></section>
+
+      <div id="eng-view" class="eng-view" hidden>
+        <div id="eng-body" class="eng-body">
+          <section class="chat-pane" aria-label="Chat with the agent">
+            <div id="chat-head" class="chat-head"></div>
+            <div id="chat-list" class="chat-list" aria-live="polite"></div>
+            <form id="chat-form" class="composer" autocomplete="off">
+              <div class="prompt-list" id="prompt-list" aria-label="Suggested prompts" hidden></div>
+              <div class="composer-box">
+                <label for="chat-input" class="sr-only">Message the agent</label>
+                <textarea id="chat-input" rows="3" placeholder="Ask about this engagement…"></textarea>
+                <div class="composer-row">
+                  <span class="composer-hint">Enter to send · Shift+Enter for a new line</span>
+                  <span class="spacer"></span>
+                  <button id="chat-stop" type="button" class="btn btn-secondary btn-sm" hidden>Stop</button>
+                  <button id="chat-send" type="submit" class="btn btn-primary btn-sm">Send</button>
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <section class="review-pane" aria-label="Review">
+            <header id="eng-header" class="page-head pane-head"></header>
+            <div id="review-view" class="review-view"></div>
+            <div id="eval-view" class="eval-view" hidden></div>
+            <aside id="panel" class="panel" aria-labelledby="panel-title" hidden>
+              <header class="panel-head">
+                <div class="panel-titles">
+                  <span id="panel-eyebrow" class="panel-eyebrow"></span>
+                  <h2 id="panel-title" tabindex="-1"></h2>
+                  <p id="panel-sub" class="panel-sub"></p>
+                </div>
+                <div class="panel-nav">
+                  <button id="panel-prev" type="button" class="tb-icon" aria-label="Previous row" title="Previous row (k)"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+                  <button id="panel-next" type="button" class="tb-icon" aria-label="Next row" title="Next row (j)"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+                  <button id="panel-close" type="button" class="tb-icon" aria-label="Close row detail" title="Close (Esc)"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button>
+                </div>
+              </header>
+              <div class="panel-body"></div>
+            </aside>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="new-eng-dialog" class="dlg" aria-labelledby="ne-title">
+    <form id="ne-form" class="dlg-form">
+      <header class="dlg-head">
+        <h2 id="ne-title">New engagement</h2>
+        <button id="ne-close" type="button" class="icon-btn" aria-label="Close">×</button>
+      </header>
+      <div class="dlg-body">
+        <div class="field">
+          <label for="ne-q" class="field-label">Nonprofit</label>
+          <input id="ne-q" type="search" class="input" placeholder="Name, UEI or EIN" autocomplete="off" aria-describedby="ne-search-status">
+          <p id="ne-search-status" class="field-hint" aria-live="polite"></p>
+          <ul id="ne-results" class="ne-results"></ul>
+        </div>
+        <fieldset id="ne-years-fs" class="field" hidden>
+          <legend class="field-label">Audit year</legend>
+          <div id="ne-years" class="ne-years"></div>
+        </fieldset>
+        <fieldset id="ne-prog-fs" class="field" hidden>
+          <legend class="field-label">Program input</legend>
+          <label class="ne-opt"><input type="radio" name="ne-prog" id="ne-mode-proxy" value="proxy" checked>
+            <span><strong>Filed SEFA as labeled proxy</strong> (default)<br><span class="field-hint">Program identities and amounts from the filed award schedule, as a stand-in for a draft. No audit outcome fields.</span></span></label>
+          <label class="ne-opt"><input type="radio" name="ne-prog" id="ne-mode-history" value="history_only">
+            <span><strong>History only</strong> (last public programs)<br><span class="field-hint">Programs in the latest public prior report, marked provisional. New or discontinued programs may be missed.</span></span></label>
+        </fieldset>
+        <p id="ne-live-note" class="notice notice-plain" hidden>Programs come from the client’s last public report, marked provisional. New or discontinued programs may be missed; correct the list in chat.</p>
+        <p id="ne-cutoff" class="field-hint"></p>
+        <div id="ne-error"></div>
+      </div>
+      <footer class="dlg-foot">
+        <p class="field-hint">The system sets the data cutoff.</p>
+        <button id="ne-cancel" type="button" class="btn btn-ghost">Cancel</button>
+        <button id="ne-create" type="submit" class="btn btn-primary" disabled>Start</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="export-dialog" class="dlg dlg-wide" aria-labelledby="export-title">
+    <div class="dlg-form">
+      <header class="dlg-head">
+        <h2 id="export-title">Staff focus note</h2>
+        <button id="export-close" type="button" class="icon-btn" aria-label="Close export">×</button>
+      </header>
+      <div class="dlg-body"><div id="export-preview" class="md export-preview"></div></div>
+      <footer class="dlg-foot">
+        <p id="export-status" class="field-hint" aria-live="polite"></p>
+        <button id="export-close-2" type="button" class="btn btn-ghost">Close</button>
+        <button id="export-copy" type="button" class="btn btn-secondary" disabled>Copy markdown</button>
+        <button id="export-download" type="button" class="btn btn-primary" disabled>Download .md</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <dialog id="reveal-dialog" class="dlg" aria-labelledby="reveal-title">
+    <div class="dlg-form">
+      <header class="dlg-head"><h2 id="reveal-title">Reveal reported outcomes?</h2></header>
+      <div class="dlg-body">
+        <p>The reported findings for audit year <span id="reveal-year"></span> will be compared with <strong id="reveal-version"></strong>, saved <span id="reveal-saved"></span>. That version becomes the frozen prediction for this engagement.</p>
+        <ul class="plain-list">
+          <li>This cannot be undone, and the frozen prediction cannot change.</li>
+          <li>Any version created afterwards is marked post-reveal and is not part of the evaluation.</li>
+          <li>Outcomes appear only in the Evaluation view, never in the chat or the review table.</li>
+        </ul>
+        <div id="reveal-error"></div>
+      </div>
+      <footer class="dlg-foot">
+        <button id="reveal-cancel" type="button" class="btn btn-ghost">Cancel</button>
+        <button id="reveal-confirm" type="button" class="btn btn-primary">Reveal outcomes</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <aside id="brief-drawer" class="brief" aria-labelledby="brief-title" hidden>
+    <header class="brief-head">
+      <div class="brief-titles"><span class="brief-eyebrow" id="brief-sub"></span><h2 id="brief-title" tabindex="-1">Planning recommendation</h2></div>
+      <button id="brief-close" type="button" class="tb-icon" aria-label="Close planning recommendation" title="Close (Esc)"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button>
+    </header>
+    <div id="brief-body" class="brief-body"></div>
+  </aside>
+  <aside id="trace-drawer" class="brief trace" aria-labelledby="trace-title" hidden>
+    <header class="brief-head">
+      <div class="brief-titles"><span class="brief-eyebrow" id="trace-sub"></span><h2 id="trace-title" tabindex="-1">Inspect trace</h2></div>
+      <button id="trace-close" type="button" class="tb-icon" aria-label="Close trace" title="Close (Esc)"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button>
+    </header>
+    <div id="trace-body" class="brief-body"></div>
+  </aside>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
