@@ -5,7 +5,7 @@
 
 import {
   el, $, $$, fill, cssEscape, checkBadge, stateBadgeShort, fmtMoney, fmtInt, fmtShare, fmtYears, plural,
-  shortName, requirementName, STATE_LABELS, STATE_ORDER, GROUP_SHORT, DISPOSITIONS, badge,
+  shortName, requirementName, STATE_LABELS, STATE_ORDER, GROUP_SHORT, DISPOSITIONS, DISPOSITION_LABELS, badge,
 } from './util.js';
 import { icon } from './icons.js';
 import { openPopover, infoButton } from './popover.js';
