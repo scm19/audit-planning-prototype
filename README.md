@@ -29,7 +29,9 @@ python -m venv .venv
 
 Then open http://127.0.0.1:8000.
 
-**No API key is needed to explore the saved engagements.** Their briefs, citations, Inspect trace, the review table, decisions and the export all work offline. **To run new assessments and chat,** set `ANTHROPIC_API_KEY` before starting (`export ANTHROPIC_API_KEY=...`, or `$env:ANTHROPIC_API_KEY = "..."` on Windows). The model is set in `riskagent/config.py`.
+**No API key is needed to explore the saved engagements.** Their briefs, citations, Inspect trace, the review table, decisions and the export all work offline. **To run new assessments and chat,** set `ANTHROPIC_API_KEY` before starting (`export ANTHROPIC_API_KEY=...`, or `$env:ANTHROPIC_API_KEY = "..."` on Windows). A new assessment takes about 3 minutes with the model; chat answers take a few seconds. The model is set in `riskagent/config.py`. Without a key, **New engagement → Assess** still builds the ranking with source-based sentences.
+
+If port 8000 is busy, start with `./run.sh --port 8010` (or `python run.py --port 8010`).
 
 ## What to open
 Click **Engagements** in the left rail. Where a nonprofit appears more than once, open the newest entry.

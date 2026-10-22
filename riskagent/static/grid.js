@@ -273,7 +273,7 @@ export function createGrid(ctx) {
     fill(root, el('div', { class: 'empty-state' },
       el('div', { class: 'empty-icon' }, icon('list', { size: 22 })),
       el('h2', {}, 'No assessment yet'),
-      el('p', {}, 'The agent ranks the areas most worth checking from public audit history, and every program it considered appears here with its evidence. Takes about a minute.'),
+      el('p', {}, 'The agent ranks the areas most worth checking from public audit history, and every program it considered appears here with its evidence. With the model this takes about 3 minutes; the steps show in the chat as they run.'),
       el('div', { class: 'empty-actions' },
         el('button', { type: 'button', class: 'btn btn-primary', disabled: busy || null, onclick: () => (ctx.state.meta?.model_available === false ? ctx.actions.runAssess() : ctx.actions.sendPrompt('Assess likely risk areas for this engagement')) }, 'Assess this engagement'),
         ctx.state.meta?.model_available === false ? el('p', { class: 'small muted' }, 'No API key is set on the server, so this builds the ranking with source-based sentences. The model-written brief and chat need ANTHROPIC_API_KEY.') : null)));
