@@ -8,7 +8,7 @@ import { openPopover } from './popover.js';
 export function claimItem(ctx, a, c, beforeNav = () => {}, tag = 'li') {
   const chk = (a.brief?.checks || []).find(x => x.claim_id === c.claim_id) || {};
   return el(tag, { class: 'claim', 'data-claim': c.claim_id },
-    c.sentence, ' ',
+    el('span', { class: 'claim-text' }, c.sentence), ' ',
     ...c.evidence_refs.map(ref => sourcePill(ctx, a, ref, c, beforeNav)),
     chk.quality_result === 'fallback' ? el('span', { class: 'claim-tag', title: 'The model’s sentence failed a check; this is a source-based fallback.' }, 'fallback') : null,
     el('button', { type: 'button', class: 'claim-tr', title: `Inspect trace for ${c.claim_id}`, 'aria-label': `Inspect trace for claim ${c.claim_id}`, onclick: () => ctx.actions.inspectTrace({ claimId: c.claim_id }) }, c.claim_id));
